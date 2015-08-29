@@ -1,4 +1,4 @@
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 describe 'GitHub API https://api.github.com/' do
   let(:url) { "https://api.github.com#{path}" }
