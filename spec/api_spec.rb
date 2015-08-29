@@ -1,24 +1,27 @@
-require 'json'
 require_relative './spec_helper'
 
 describe 'GitHub API https://api.github.com/' do
-  let(:url) { "curl https://api.github.com#{path} -s -S" }
-  let(:response_body) { `#{url}` }
-  let(:json) { JSON.parse(response_body, symbolize_names: true) }
+  let(:url) { "https://api.github.com#{path}" }
+  let(:method) { :get }
+  let(:params) { {} }
+  let(:response) { RestClient.send(method, url, params) }
+  let(:json) { JSON.parse(response.body, symbolize_names: true) }
 
-  describe '/' do
+  describe 'GET /' do
     let(:path) { '/' }
     it 'has an entry' do
       expect(json[:emojis_url]).to eq('https://api.github.com/emojis')
       expect(json.keys.size).to eq(29)
+      expect(response.code).to eq(200)
     end
   end
 
-  describe '/emojis' do
+  describe 'GET /emojis' do
     let(:path) { '/emojis' }
     it 'has an entry' do
       expect(json[:a]).to match(/\.png/)
       expect(json.keys.size).to eq(888)
+      expect(response.code).to eq(200)
     end
   end
 end
